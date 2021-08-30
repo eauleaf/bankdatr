@@ -1,23 +1,24 @@
-#' download and return FDIC Branch Deposit Data for all deposits for all US branches
-#'   for any available period
+#' Download and return FDIC Branch Deposit Data for all US branches for any available period
+#'
+#' Gets the complete yearly data from the fdic website and saves the data to a
+#' local specified folder, or if the data has already been downloaded, the
+#' function just picks up the saved data
+#' Note: data is only available from 1994 or sooner
 #' human URL: https://www7.fdic.gov/sod/dynaDownload.asp?barItem=6
 #' human URL info: https://www7.fdic.gov/sod/sodDownload3.asp?sState=all&sInfoAsOf=2020&submit1=Continue&barItem=6
-
-
-#' gets the complete yearly data from the fdic website and saves the data to a local specified folder,
-#' or if the data has already been downloaded, the function just picks up the saved data
-#' Note: data is only available from 1994 or sooner
 #'
-#' @param .year the year do you want to get fdic branch data for
-#' @param save_dir the location to save the zip and rds files, default is here::here('data')
+#' @param .year integer, the year you want to get fdic branch data for
+#' @param save_dir string, the location to save the zip and rds files, default is here::here('data')
 #' @param keep_fdic_rds_file boolean to save the rds file in the save_dir, default is T
 #' @param keep_fdic_zip_file boolean to save the zip file in the save_dir, default is F
 #'
-#' @return a tibble of the entire fdic branch data file and corresponding saved rds file, as well as saved zip files if elected
+#' @return tibble of the entire fdic branch data file and corresponding saved rds file, as well as saved zip files if elected
+#'
+#' @importFrom magrittr %>%
+#'
+#' @export
 #'
 #' @examples fdic_2020 <- get_fdic_branch_deposit_data(2020)
-#' fdic <- 2020:2019 %>% map(get_fdic_branch_deposit_data)
-#' fdic_all_hist <- 2020:1994 %>% map(get_fdic_branch_deposit_data)
 
 get_fdic_branch_deposit_data <- function(.year = 2020
                                          ,save_dir = here::here('data')
@@ -25,7 +26,7 @@ get_fdic_branch_deposit_data <- function(.year = 2020
                                          ,keep_fdic_zip_file = F
 ){
 
-  require(tidyverse)
+  # require(tidyverse)
 
   # create a path if the first time
   dir.create(path = save_dir, showWarnings = F, recursive = T)
@@ -41,12 +42,12 @@ get_fdic_branch_deposit_data <- function(.year = 2020
   } else if (!file.exists(zip_file)){
 
     fdic_url <- glue::glue('https://www7.fdic.gov/sod/ShowFileWithStats1.asp?strFileName=ALL_{.year}.zip')
-    message('\nattempting to download FDIC data for', .year, 'from:\n\t',
+    message('\nattempting to download FDIC data for ', .year, 'from:\n\t',
             fdic_url)
 
     safe_curl_download <- purrr::possibly(curl::curl_download, otherwise = NULL)
     zip_file <- safe_curl_download(url = fdic_url, destfile = zip_file)
-    if(is_null(zip_file)) {
+    if(purrr::is_null(zip_file)) {
       message('\nunable to download FDIC data for', .year, '\n')
       return(NULL)
     }
@@ -57,7 +58,7 @@ get_fdic_branch_deposit_data <- function(.year = 2020
   }
 
 
-  unzip(zip_file, exdir = save_dir)
+  utils::unzip(zip_file, exdir = save_dir)
 
   # list csv files
   csv_files <- list.files(save_dir,'csv$',full.names = T)
@@ -83,8 +84,8 @@ get_fdic_branch_deposit_data <- function(.year = 2020
                          SPECDESC = 'c', STCNTY = 'c', STNAME = 'c', USA = 'd')
 
   # read complete csv file and write to rds
-  branch_datr <- csv_files[(csv_files %>% str_detect((glue::glue('ALL_{.year}.csv$') %>% as.character())))] %>%
-    read_csv(., col_types = c_types) %>%
+  branch_datr <- csv_files[(csv_files %>% stringr::str_detect((glue::glue('ALL_{.year}.csv$') %>% as.character())))] %>%
+    readr::read_csv(file = ., col_types = c_types) %>%
     janitor::clean_names()
 
   if(keep_fdic_rds_file) {

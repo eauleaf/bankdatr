@@ -1,16 +1,21 @@
 Package: bankdatr
-Title: What the Package Does (One Line, Title Case)
+Title: Easy Collection of Bulk Open Bank Data from US Regulatory Agencies
 Version: 0.0.0.9000
 Authors@R: 
-    person(given = "First",
-           family = "Last",
-           role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
-License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
-    license
+    person("eau", "leaf", email = "eau.leaf@gmail.com", role = c("aut", "cre"))
+Description: Series of user-friendly functions to pull bulk bank-related data into R from US regulator sites. Ancilary function to process collected bank data in specific ways: for example, get the distance from one bank branch location to a vector of other bank branch locations.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+Imports: 
+    curl,
+    glue,
+    here,
+    janitor,
+    magrittr,
+    purrr,
+    readr,
+    stringr,
+    utils
