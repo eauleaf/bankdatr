@@ -1,0 +1,28 @@
+---
+output: github_document
+---
+
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+```{r, echo = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.path = "README-"
+)
+```
+
+
+The goal of `bankdatr` is to provide an easy collection of bulk open bank data 
+from US regulatory agencies.
+
+
+## Installation
+`bankdatr` is not available from CRAN yet. In the meantime, you can install the development version of bankdatr from Github:
+
+```{r gh-installation, eval = FALSE}
+# install.packages("devtools")
+devtools::install_github("eauleaf/bankdatr")
+```
+
