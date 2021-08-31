@@ -1,6 +1,6 @@
 Package: bankdatr
 Title: Easy Collection of Bulk Open Bank Data from US Regulatory Agencies
-Version: 0.0.0.9000
+Version: 0.0.1.0001
 Authors@R: 
     person("eau", "leaf", email = "eau.leaf@gmail.com", role = c("aut", "cre"))
 Description: Series of user-friendly functions to pull bulk bank-related data into R from US regulator sites. Ancilary function to process collected bank data in specific ways: for example, get the distance from one bank branch location to a vector of other bank branch locations.
