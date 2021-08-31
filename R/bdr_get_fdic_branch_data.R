@@ -18,9 +18,9 @@
 #'
 #' @export
 #'
-#' @examples fdic_2020 <- get_fdic_branch_deposit_data(2020)
+#' @examples fdic_2020 <- bdr_get_fdic_branch_data(2020)
 
-get_fdic_branch_deposit_data <- function(.year = 2020
+bdr_get_fdic_branch_data <- function(.year = 2020
                                          ,save_dir = here::here('data')
                                          ,keep_fdic_rds_file = T
                                          ,keep_fdic_zip_file = F
